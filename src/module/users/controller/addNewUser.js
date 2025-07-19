@@ -63,8 +63,7 @@ const getAllUsers = async (req, res) => {
 
 // Get user by ID
 const getUserById = async (req, res) => {
-  const { id } = req.params;
-
+  const { id } = req.user;
   try {
     const result = await pool.query(getUsersByIdQuery, [id]);
     if (result.rows.length === 0) {
