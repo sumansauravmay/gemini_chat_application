@@ -1,6 +1,6 @@
 const createUserTableQuery = `
 CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,  -- use lowercase for consistency
+    id SERIAL PRIMARY KEY, 
     name VARCHAR(255),
     email VARCHAR(255),
     phone VARCHAR(255),
