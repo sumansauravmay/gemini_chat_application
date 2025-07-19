@@ -1,3 +1,4 @@
+const { cache } = require("../../../config/cacheQueue");
 const { pool } = require("../../../config/db");
 const { generateGeminiContent } = require("../../../services/geminiApi");
 const {
@@ -26,20 +27,30 @@ const messageChatRoom = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Message required" });
     }
+
+    const cacheKey = `chat:${chatroomId}:msg:${message.trim().toLowerCase()}`;
+    let geminiResponse = cache.get(cacheKey);
+
+    if (!geminiResponse) {
+      // Not in cache — generate response and cache it
+      geminiResponse = await generateGeminiContent(message);
+      cache.set(cacheKey, geminiResponse);
+    }
+
     await pool.query(insertMessageQuery, [chatroomId, "user", userId, message]);
 
-    const geminiResponse = await generateGeminiContent(message);
+    // const geminiResponse = await generateGeminiContent(message);
     await pool.query(insertMessageQuery, [
       chatroomId,
       "gemini",
       null,
       geminiResponse,
     ]);
-
     return res.status(200).json({
       success: true,
       userMessage: message,
       geminiResponse,
+      fromCache: !!cache.get(cacheKey),
     });
   } catch (error) {
     console.error("Error in messageChatRoom:", error);
