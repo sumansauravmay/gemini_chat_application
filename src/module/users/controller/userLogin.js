@@ -34,11 +34,6 @@ const loginUser = async (req, res) => {
         .status(401)
         .json({ success: false, message: "Invalid email or password" });
     }
-
-    // Generate JWT token
-    const token = jwt.sign({ id: user.id, email: user.email }, SECRET_KEY, {
-      expiresIn: "24h",
-    });
     let otp = generateOTP();
     const otp_expires_at = new Date(Date.now() + 10 * 60 * 1000);
 
@@ -50,19 +45,16 @@ const loginUser = async (req, res) => {
       user.password,
       otp,
       otp_expires_at,
-      false, // Reset is_verified to false on every login
+      false,
     ]);
-    console.log("updateResult", updateResult);
 
     return res.status(200).json({
       success: true,
-      message: "Login successful",
+      message: "OTP sent successfully. Please verify your email/sms otp",
       otp,
-      token,
       user: { id: user.id, name: user.name, email: user.email },
     });
   } catch (error) {
-    // console.error("Error logging in:", error);
     return res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -106,9 +98,15 @@ const verifyOtp = async (req, res) => {
       [email]
     );
 
+    // Generate JWT token
+    const token = jwt.sign({ id: user.id, email: user.email }, SECRET_KEY, {
+      expiresIn: "24h",
+    });
+
     return res.status(200).json({
       success: true,
       message: "OTP verified successfully. User is now verified.",
+      token,
     });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
