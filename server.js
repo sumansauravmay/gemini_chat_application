@@ -8,13 +8,11 @@ const {
 } = require("./src/module/users/controller/addNewUser");
 
 const app = express();
-
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
 connectToDatabase();
-initializeUserTable();
+// initializeUserTable();
 
 app.use("/api/v1", allRoutes);
 
