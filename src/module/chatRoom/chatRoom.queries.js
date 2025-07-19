@@ -19,26 +19,29 @@ WHERE id = $1
 RETURNING *;
 `;
 
-const getAllChatRoomQuery = "SELECT * FROM chatrooms;";
+const getAllChatRoomQuery = "SELECT * FROM chatrooms WHERE user_id = $1;";
 const getChatRoomByIdQuery = "SELECT * FROM chatrooms WHERE id = $1;";
 
 // message queue
 
-const createMeesagesTable = `
+const createMessagesTable = `
 CREATE TABLE messages (
   id SERIAL PRIMARY KEY,
-  chatroom_id INTEGER REFERENCES chatrooms(id),
-  sender TEXT, -- 'user' or 'gemini'
-  content TEXT,
+  chatroom_id INTEGER NOT NULL REFERENCES chatrooms(id) ON DELETE CASCADE,
+  sender TEXT NOT NULL CHECK (sender IN ('user', 'gemini')),
+  sender_user_id INTEGER REFERENCES users(id), -- Nullable for Gemini
+  content TEXT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 `;
 
+
 const insertMessageQuery = `
-INSERT INTO messages (chatroom_id, sender, content) 
-VALUES ($1, $2, $3)
+INSERT INTO messages (chatroom_id, sender, sender_user_id, content) 
+VALUES ($1, $2, $3, $4)
 RETURNING *;
 `;
+
 
 const updateMessageQuery = `UPDATE messages
 SET chatroom_id = $2, sender = $3, content = $4
@@ -56,7 +59,7 @@ module.exports = {
   getAllChatRoomQuery,
   getChatRoomByIdQuery,
 
-  createMeesagesTable,
+  createMessagesTable,
   insertMessageQuery,
   updateMessageQuery,
   getAllMessagesQuery,
