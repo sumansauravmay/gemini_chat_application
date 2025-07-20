@@ -3,7 +3,19 @@ const { pool } = require("../../../config/db");
 const {
   insertChatRoomQuery,
   getAllChatRoomQuery,
+  createChatRoomTable,
 } = require("../chatRoom.queries");
+
+
+const initializeChatRommTable = async () => {
+  try {
+    await pool.query(createChatRoomTable);
+    console.log("Chat room table is ready");
+  } catch (error) {
+    console.error("Error creating users table:", error);
+  }
+};
+
 
 const createChatRoom = async (req, res) => {
   try {
@@ -28,4 +40,4 @@ const createChatRoom = async (req, res) => {
 
 
 
-module.exports = { createChatRoom };
+module.exports = { createChatRoom, initializeChatRommTable };

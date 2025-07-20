@@ -6,13 +6,20 @@ const { connectToDatabase, pool } = require("./src/config/db");
 const {
   initializeUserTable,
 } = require("./src/module/users/controller/addNewUser");
+const { initializeMessagesTable } = require("./src/module/chatRoom/controller/messageChatRoom");
+const { initializeChatRommTable } = require("./src/module/chatRoom/controller/createChatRoom");
+const { initializeSubscriptionTable } = require("./src/module/subscriptionPayment/subscriptionController");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
 connectToDatabase();
-// initializeUserTable();
+initializeUserTable();
+initializeMessagesTable();
+initializeChatRommTable();
+initializeSubscriptionTable()
+
 
 const initializeSubscriptionsTable = async () => {
   const query = `
