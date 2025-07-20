@@ -48,6 +48,53 @@ A full-featured backend system built using **Node.js**, **PostgreSQL**, and **St
 
 ## 🧱 System Architecture
 
+User ↔️ Auth API (OTP/JWT) ↔️ Chatroom Service ↔️ Redis Queue ↔️ Gemini API
+↘️ PostgreSQL
+Stripe ↔️ Webhook Listener ↔️ Subscription Manager
+
+---
+
+## 📦 Project Setup
+
+1. **Clone the Repo**
+
+```bash
+git clone https://github.com/sumansauravmay/gemini_chat_application.git
+cd gemini_chat_application
+
+
+2. **Install Dependencies**
+
+```bash
+npm install
+
+Configure Environment Variables
+
+Create a .env file:
+
+```bash
+PORT=5000
+PG_USER=postgres
+PG_PASSWORD=your_password
+PG_HOST=localhost
+PG_PORT=5432
+PG_DATABASE=gemini_db
+
+JWT_SECRET=your_jwt_secret
+REDIS_URL=redis://localhost:6379
+
+STRIPE_SECRET_KEY=your_stripe_key
+STRIPE_PRO_PLAN_PRICE_ID=your_price_id
+
+GEMINI_API_KEY=your_gemini_api_key
+
+
+
+
+4. **Start Server**
+
+```bash
+npm start
 
 
 
