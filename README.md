@@ -61,16 +61,16 @@ Stripe ↔️ Webhook Listener ↔️ Subscription Manager
 ````bash
 git clone https://github.com/sumansauravmay/gemini_chat_application.git
 cd gemini_chat_application
-
+````
 
 2. **Install Dependencies**
 
 ```bash
 npm install
+````
+3. Configure Environment Variables
 
-Configure Environment Variables
-
-Create a .env file:
+ Create a .env file:
 
 ```bash
 PORT=5000
@@ -87,7 +87,7 @@ STRIPE_SECRET_KEY=your_stripe_key
 STRIPE_PRO_PLAN_PRICE_ID=your_price_id
 
 GEMINI_API_KEY=your_gemini_api_key
-
+````
 
 
 
