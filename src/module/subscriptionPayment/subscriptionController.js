@@ -1,6 +1,18 @@
 const { pool } = require("../../config/db");
 const stripe = require("../../config/stripe");
+const { createSubsriptionTable } = require("./subscription.queries");
 require("dotenv").config();
+
+const initializeSubscriptionTable = async () => {
+  try {
+    await pool.query(createSubsriptionTable);
+    console.log("Subscription table is ready");
+  } catch (error) {
+    console.error("Error creating users table:", error);
+  }
+};
+
+
 
 // POST /subscribe/pro
 const subscribePro = async (req, res) => {
@@ -105,4 +117,5 @@ module.exports = {
   subscribePro,
   handleWebhook,
   getSubscriptionStatus,
+  initializeSubscriptionTable
 };
