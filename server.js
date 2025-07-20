@@ -14,11 +14,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-connectToDatabase();
-initializeUserTable();
-initializeMessagesTable();
-initializeChatRommTable();
-initializeSubscriptionTable()
 
 
 const initializeSubscriptionsTable = async () => {
@@ -40,6 +35,10 @@ const initializeSubscriptionsTable = async () => {
   }
 };
 
+connectToDatabase();
+initializeUserTable();
+initializeMessagesTable();
+initializeChatRommTable();
 initializeSubscriptionsTable();
 
 
